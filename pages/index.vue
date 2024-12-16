@@ -3,10 +3,10 @@
         <div class="list-container">
             <div class="list-input">
                 <input type="text" :inputTodo="inputTodo" @input="checkTodo" />
-                <button type="button">+</button>
+                <button type="button" @click="addNewTodo">+</button>
             </div>
             <div class="list-box">
-                <ul></ul>
+                <ul class="todo-list"></ul>
             </div>
         </div>
     </NuxtLayout>
@@ -14,14 +14,28 @@
 <script setup>
 let inputTodo = "";
 // const todoList = [];
-const checkTodo = (event) => {
-    inputTodo = event.target.value;
+const checkTodo = (e) => {
+    inputTodo = e.target.value;
     console.log(inputTodo);
 };
-// const addNewTodo = () => {
-//     this.todoList.push(this.inputTodo);
-//     console.log(this.todoList);
-// };
+const addNewTodo = () => {
+    let item = document.createElement("li");
+    let todoList = document.querySelector(".todo-list");
+    if (!inputTodo) {
+        alert("입력되지 않았습니다 !!");
+    } else {
+        item.innerHTML = inputTodo;
+        todoList.appendChild(item);
+        return (inputTodo = "");
+    }
+
+    item.addEventListener("click", function () {
+        item.classList.add("__active");
+    });
+    item.addEventListener("dblclick", function () {
+        item.remove();
+    });
+};
 </script>
 <style lang="scss">
 .list-container {

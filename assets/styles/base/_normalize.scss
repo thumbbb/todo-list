@@ -124,9 +124,4 @@ main {
 abbr[title] {
     border-bottom: none;
     text-decoration: none;
-    @include tablet {
-        &::after {
-            content: " (" attr(title) ") ";
-        }
-    }
 }
