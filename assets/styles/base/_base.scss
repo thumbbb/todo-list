@@ -3,6 +3,7 @@ body {
     font-family: "Pretendard", sans-serif;
     overflow-y: auto;
 }
+
 .web-body {
     position: relative;
     width: 63rem;
@@ -24,10 +25,12 @@ span {
     z-index: 1500;
     background: rgba(0 0 0 / 80%);
     display: none;
+
     &.__active {
         display: block;
     }
 }
+
 .dimmed-layer {
     display: flex;
     justify-content: center;
@@ -51,14 +54,16 @@ span {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     .layer-title {
         display: block;
         font-size: 2.2rem;
         font-weight: bold;
         color: #fff;
     }
+
     .close-btn {
-        > img {
+        >img {
             width: 100%;
         }
     }
@@ -86,10 +91,7 @@ input[type="checkbox"] {
     //background: no-repeat center url("@images/common/ico-check.png");
     background-color: white;
     background-size: contain;
-    @include tablet {
-        width: 1.2rem;
-        height: 1.2rem;
-    }
+
     &:checked {
         border: 0.1rem solid #767676;
         //background: no-repeat center url("@images/common/ico-checked.png");
