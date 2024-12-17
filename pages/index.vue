@@ -2,40 +2,55 @@
     <NuxtLayout name="default">
         <div class="list-container">
             <div class="list-input">
-                <input type="text" :inputTodo="inputTodo" @input="checkTodo" />
+                <input type="text" v-model="inputTodo" />
                 <button type="button" @click="addNewTodo">+</button>
             </div>
             <div class="list-box">
-                <ul class="todo-list"></ul>
+                <ul class="todo-list">
+                    <li v-for="(todo, i) in todoList" :key="i">
+                        <span class="text" :class="{ __active: todo.completed }">{{ todo.item }}</span>
+                        <button type="button" @click="removeTodo(todo, i)">Delete</button>
+                    </li>
+                </ul>
             </div>
         </div>
     </NuxtLayout>
 </template>
 <script setup>
 let inputTodo = "";
-// const todoList = [];
-const checkTodo = (e) => {
-    inputTodo = e.target.value;
-    console.log(inputTodo);
+let todoList = [];
+
+const clearTodo = () => {
+    inputTodo = "";
+};
+const removeTodo = (todoItem, i) => {
+    localStorage.removeItem(todoItem);
+    todoList.splice(i, 1);
+};
+const completeTodo = (todoItem, i) => {
+    todoItem.completed = !todoItem.completed;
+    localStorage.removeItem(todoItem.item);
+    localStorage.setItem(todoItem.item, JSON.stringify(todoItem));
 };
 const addNewTodo = () => {
-    let item = document.createElement("li");
-    let todoList = document.querySelector(".todo-list");
+    console.log(inputTodo);
     if (!inputTodo) {
         alert("입력되지 않았습니다 !!");
     } else {
-        item.innerHTML = inputTodo;
-        todoList.appendChild(item);
-        return (inputTodo = "");
+        let items = { completed: false, item: inputTodo };
+        localStorage.setItem(inputTodo, JSON.stringify(items));
+        clearTodo();
     }
-
-    item.addEventListener("click", function () {
-        item.classList.add("__active");
-    });
-    item.addEventListener("dblclick", function () {
-        item.remove();
-    });
 };
+onBeforeMount(function setList() {
+    if (localStorage.length > 0) {
+        for (let i = 0; i < localStorage.length; i++) {
+            todoList.push(JSON.parse(localStorage.getItem(localStorage.key(i))));
+            console.log(todoList);
+        }
+        // console.log(localStorage);
+    }
+});
 </script>
 <style lang="scss">
 .list-container {
@@ -75,6 +90,18 @@ const addNewTodo = () => {
         }
     }
     .list-box {
+        .todo-list {
+            list-style: disc;
+            > li {
+                .text {
+                    display: inline-block;
+                    margin-right: 10px;
+                    &.__active {
+                        color: red;
+                    }
+                }
+            }
+        }
     }
 }
 </style>
